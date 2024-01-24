@@ -1,4 +1,6 @@
+import 'package:chatting_app_flutter/domain/usecases/get_chat_room.dart';
 import 'package:chatting_app_flutter/domain/usecases/get_user.dart';
+import 'package:chatting_app_flutter/presentation/chat_page.dart';
 import 'package:chatting_app_flutter/presentation/common/common_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         height: MediaQuery.of(context).size.height - kToolbarHeight,
         child: FutureBuilder<List>(
-            future: GetUser().execute(widget.username),
+            future: GetChatRoom().execute(widget.username),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 var listChat = snapshot.data!;
@@ -42,17 +44,22 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           children: [
                             Text(
-                              '$listChat[i].users[1]',
+                              '${listChat[i]['users'][1]}',
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Text('$listChat[i].messages')
+                            Text(
+                                '${listChat[i]['messages'][listChat[i]['messages'].length - 1]['text']}')
                           ],
                         ),
                       ),
                     );
                   }),
                 );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              } else {
+                return const Text('Belum ada chat');
               }
             }),
       ),
