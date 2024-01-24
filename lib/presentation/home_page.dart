@@ -2,6 +2,7 @@ import 'package:chatting_app_flutter/domain/usecases/get_chat_room.dart';
 import 'package:chatting_app_flutter/domain/usecases/get_user.dart';
 import 'package:chatting_app_flutter/presentation/chat_page.dart';
 import 'package:chatting_app_flutter/presentation/common/common_app_bar.dart';
+import 'package:chatting_app_flutter/shared/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,24 +37,21 @@ class _HomePageState extends State<HomePage> {
                 return ListView(
                   children: List.generate(listChat.length, (i) {
                     return InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatPage()));
-                      },
-                      child: Card(
-                        child: Column(
-                          children: [
-                            Text(
-                              '${listChat[i]['users'][1]}',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                                '${listChat[i]['messages'][listChat[i]['messages'].length - 1]['text']}')
-                          ],
-                        ),
-                      ),
-                    );
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChatPage()));
+                        },
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            child: Icon(Icons.person),
+                          ),
+                          title: Text(
+                            '${listChat[i]['users'][1]}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                              '${Helper().getLastMessageText(listChat, i)}'),
+                        ));
                   }),
                 );
               } else if (snapshot.hasError) {

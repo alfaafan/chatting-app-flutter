@@ -16,7 +16,6 @@ class ChatRepository {
   Future<List> getRooms(String username) async {
     var listChatRoom =
         jsonDecode(await remoteChatDatasource.getRoom(username))['data'];
-    print(listChatRoom[0]);
     return listChatRoom;
   }
 }
