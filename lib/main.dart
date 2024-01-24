@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'ChatApp',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
           useMaterial3: true,
         ),
         home: const LoginPage(),

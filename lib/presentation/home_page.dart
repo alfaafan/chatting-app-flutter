@@ -47,10 +47,11 @@ class _HomePageState extends State<HomePage> {
                           ),
                           title: Text(
                             '${listChat[i]['users'][1]}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Text(
-                              '${Helper().getLastMessageText(listChat, i)}'),
+                          subtitle:
+                              Text(Helper().getLastMessageText(listChat, i)),
+                          trailing: Text('17.59'),
                         ));
                   }),
                 );

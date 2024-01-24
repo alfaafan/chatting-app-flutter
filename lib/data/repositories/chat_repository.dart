@@ -18,4 +18,10 @@ class ChatRepository {
         jsonDecode(await remoteChatDatasource.getRoom(username))['data'];
     return listChatRoom;
   }
+
+  Future<Map<String, dynamic>> getChat(String id) async {
+    var chat = jsonDecode(await remoteChatDatasource.getChat(id))['data'];
+
+    return chat;
+  }
 }
