@@ -9,4 +9,15 @@ class Helper {
       return 'Tidak ada pesan';
     }
   }
+
+  // List<String> getFilteredUsernames(List<dynamic> dataList, String myUsername) {
+  //   for (var data in dataList) {
+  //     if (data['users'] is List && data['users'].contains(myUsername)) {
+  //       List<String> users = List<String>.from(data['users']);
+  //       users.remove(myUsername);
+  //     }
+  //   }
+
+  //   return users;
+  // }
 }

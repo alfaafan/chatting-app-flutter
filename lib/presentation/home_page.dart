@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) => ChatPage()));
                         },
                         child: ListTile(
-                          leading: CircleAvatar(
+                          leading: const CircleAvatar(
                             child: Icon(Icons.person),
                           ),
                           title: Text(
