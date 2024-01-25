@@ -33,8 +33,8 @@ class Helper {
     return users.firstWhere((user) => user != currentUser);
   }
 
-  String formatDateTime(int timestamp) {
-    var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  String formatDateTime(String timestamp) {
+    var date = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
     var formatter = DateFormat('HH:mm');
     return formatter.format(date);
   }

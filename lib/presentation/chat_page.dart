@@ -1,5 +1,6 @@
 import 'package:chatting_app_flutter/domain/usecases/get_chat.dart';
 import 'package:chatting_app_flutter/presentation/common/common_app_bar.dart';
+import 'package:chatting_app_flutter/shared/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
@@ -53,21 +54,38 @@ class _ChatPageState extends State<ChatPage> {
                       itemBuilder: (context, i) {
                         bool isCurrentUser =
                             messages[i]['username'] == currentUser;
+
+                        var formattedDate =
+                            Helper().formatDateTime(messages[i]['timestamp']);
+
                         return Align(
                             alignment: isCurrentUser
                                 ? Alignment.centerRight
                                 : Alignment.centerLeft,
                             child: Container(
-                              padding: const EdgeInsets.all(10),
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              decoration: BoxDecoration(
-                                  color: isCurrentUser
-                                      ? Colors.green
-                                      : Colors.grey,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text(messages[i]['text']),
-                            ));
+                                constraints:
+                                    const BoxConstraints(minWidth: 100),
+                                padding: const EdgeInsets.all(7.5),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
+                                decoration: BoxDecoration(
+                                    color: isCurrentUser
+                                        ? Colors.orangeAccent
+                                        : Colors.grey,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(messages[i]['text']),
+                                    Text(
+                                      formattedDate,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 10,
+                                          color: Colors.black54),
+                                    )
+                                  ],
+                                )));
                       },
                     );
                   }

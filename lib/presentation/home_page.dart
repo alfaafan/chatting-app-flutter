@@ -43,6 +43,8 @@ class _HomePageState extends State<HomePage> {
                     var lastMessage = Helper().getLastMessage(chatList, i);
                     var otherUser = Helper()
                         .getOtherUser(chatList[i]['users'], widget.username);
+                    var formattedDate =
+                        Helper().formatDateTime(lastMessage['timestamp']);
                     return InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -62,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           subtitle:
                               Text(Helper().getLastMessageText(chatList, i)),
-                          trailing: Text('${lastMessage['timestamp']}'),
+                          trailing: Text(formattedDate),
                         ));
                   }),
                 );
