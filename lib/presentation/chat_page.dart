@@ -16,7 +16,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonAppBar(),
+      appBar: const CommonAppBar(),
       body: FutureBuilder<Map<String, dynamic>>(
         future: GetChat().execute(widget.roomId),
         builder: (context, snapshot) {
@@ -25,15 +25,16 @@ class _ChatPageState extends State<ChatPage> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
-            return const Center(
+            return Center(
               child: Text('${snapshot.error}'),
             );
           } else {
             var data = snapshot.data!;
-            return const Center(
+            return Center(
               child: Column(
-                children: [],
-              ),
+                  children: data.entries.map<Widget>((item) {
+                return Text(item.value.toString());
+              }).toList()),
             );
           }
         },

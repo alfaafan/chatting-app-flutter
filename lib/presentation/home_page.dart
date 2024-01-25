@@ -15,19 +15,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> listChat = [];
+  List<String> roomList = [];
   Map<String, List<Map<String, dynamic>>> roomMessages = {};
 
   @override
   void initState() {
     super.initState();
-    GetUser().execute(widget.username);
+    GetUser().execute(widget.username).then((result) {
+      setState(() {
+        roomList = result.cast<String>();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CommonAppBar(),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height - kToolbarHeight,
         child: FutureBuilder<List>(
             future: GetChatRoom().execute(widget.username),
@@ -39,7 +44,10 @@ class _HomePageState extends State<HomePage> {
                     return InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ChatPage()));
+                              builder: (context) => ChatPage(
+                                    roomId: roomList[i],
+                                    username: widget.username,
+                                  )));
                         },
                         child: ListTile(
                           leading: const CircleAvatar(
@@ -51,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           subtitle:
                               Text(Helper().getLastMessageText(listChat, i)),
-                          trailing: Text('17.59'),
+                          trailing: const Text('17.59'),
                         ));
                   }),
                 );
