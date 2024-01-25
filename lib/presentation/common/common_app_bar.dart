@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CommonAppBar({super.key});
+  final Widget title;
+
+  const CommonAppBar({super.key, this.title = const Text('ChatApp')});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -9,7 +11,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('ChatApp'),
+      title: title,
       centerTitle: true,
     );
   }

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Helper {
   String getLastMessageText(List listChat, int i) {
     if (listChat.length > i &&
@@ -10,14 +12,30 @@ class Helper {
     }
   }
 
-  // List<String> getFilteredUsernames(List<dynamic> dataList, String myUsername) {
-  //   for (var data in dataList) {
-  //     if (data['users'] is List && data['users'].contains(myUsername)) {
-  //       List<String> users = List<String>.from(data['users']);
-  //       users.remove(myUsername);
-  //     }
-  //   }
+  Map<String, dynamic> getLastMessage(List chatList, int i) {
+    if (chatList.length > i &&
+        chatList[i]['messages'] is List &&
+        chatList[i]['messages'].isNotEmpty &&
+        chatList[i]['messages'].last['text'] != null) {
+      return {
+        'message': chatList[i]['messages'].last['text'].toString(),
+        'timestamp': chatList[i]['messages'].last['timestamp'],
+      };
+    } else {
+      return {
+        'message': 'Tidak ada pesan',
+        'timestamp': null,
+      };
+    }
+  }
 
-  //   return users;
-  // }
+  String getOtherUser(List<dynamic> users, String currentUser) {
+    return users.firstWhere((user) => user != currentUser);
+  }
+
+  String formatDateTime(int timestamp) {
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    var formatter = DateFormat('HH:mm');
+    return formatter.format(date);
+  }
 }

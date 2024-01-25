@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> listChat = [];
   List<String> roomList = [];
   Map<String, List<Map<String, dynamic>>> roomMessages = {};
 
@@ -38,15 +37,19 @@ class _HomePageState extends State<HomePage> {
             future: GetChatRoom().execute(widget.username),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var listChat = snapshot.data!;
+                var chatList = snapshot.data!;
                 return ListView(
-                  children: List.generate(listChat.length, (i) {
+                  children: List.generate(chatList.length, (i) {
+                    var lastMessage = Helper().getLastMessage(chatList, i);
+                    var otherUser = Helper()
+                        .getOtherUser(chatList[i]['users'], widget.username);
                     return InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ChatPage(
                                     roomId: roomList[i],
                                     username: widget.username,
+                                    otherUser: otherUser,
                                   )));
                         },
                         child: ListTile(
@@ -54,12 +57,12 @@ class _HomePageState extends State<HomePage> {
                             child: Icon(Icons.person),
                           ),
                           title: Text(
-                            '${listChat[i]['users'][1]}',
+                            '${chatList[i]['users'][1]}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle:
-                              Text(Helper().getLastMessageText(listChat, i)),
-                          trailing: const Text('17.59'),
+                              Text(Helper().getLastMessageText(chatList, i)),
+                          trailing: Text('${lastMessage['timestamp']}'),
                         ));
                   }),
                 );
