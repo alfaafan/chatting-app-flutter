@@ -24,4 +24,14 @@ class ChatRepository {
 
     return chat;
   }
+
+  Future<String> createRoom(String from, String to) async {
+    var response = await remoteChatDatasource.createRoom(from, to);
+    return response;
+  }
+
+  Future<String> createChat(String id, String from, String text) async {
+    var response = await remoteChatDatasource.createChat(id, from, text);
+    return response;
+  }
 }
