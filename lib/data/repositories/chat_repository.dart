@@ -1,37 +1,53 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:chatting_app_flutter/data/datasources/remote_chat_datasource.dart';
+import 'package:chatting_app_flutter/domain/entities/chat.dart';
+import 'package:chatting_app_flutter/domain/entities/chat_list.dart';
+import 'package:chatting_app_flutter/domain/entities/chat_room.dart';
+import 'package:chatting_app_flutter/domain/entities/message_send.dart';
+import 'package:chatting_app_flutter/domain/entities/user.dart';
 
 class ChatRepository {
   var remoteChatDatasource = RemoteChatDatasource();
 
-  Future<List> getUser(String username) async {
-    var jsonArray =
+  Future<User> getUser(String username) async {
+    var response =
         jsonDecode(await remoteChatDatasource.getUser(username))['data'];
-    var listChat = jsonArray['rooms'];
+    User user = User.fromJson(response);
 
-    return listChat;
+    return user;
   }
 
-  Future<List> getRooms(String username) async {
-    var listChatRoom =
-        jsonDecode(await remoteChatDatasource.getRoom(username))['data'];
-    return listChatRoom;
+  Future<List<ChatData>> getRooms(String username) async {
+    var listChatRoom = jsonDecode(await remoteChatDatasource.getRoom(username));
+    List<ChatData> chatList = ChatList.fromJson(listChatRoom);
+    return chatList;
   }
 
-  Future<Map<String, dynamic>> getChat(String id) async {
-    var chat = jsonDecode(await remoteChatDatasource.getChat(id))['data'];
+  Future<ChatRoom> getChat(String id) async {
+    try {
+      var response = jsonDecode(await remoteChatDatasource.getChat(id))['data'];
 
-    return chat;
+      ChatRoom chatRoom = ChatRoom.fromJson(response);
+
+      return chatRoom;
+    } catch (e) {
+      throw Exception('Failed to fetch chat: $e');
+    }
   }
 
-  Future<String> createRoom(String from, String to) async {
-    var response = await remoteChatDatasource.createRoom(from, to);
+  Future<Map<String, dynamic>> createRoom(String from, String to) async {
+    var response =
+        jsonDecode(await remoteChatDatasource.createRoom(from, to))['data'];
     return response;
   }
 
-  Future<String> createChat(String id, String from, String text) async {
-    var response = await remoteChatDatasource.createChat(id, from, text);
-    return response;
+  Future<bool> createChat(MessageSend message) async {
+    print(message.runtimeType);
+    var response =
+        await remoteChatDatasource.createChat(message.toJson() as MessageSend);
+    print(response);
+    return response == 'true' ? true : false;
   }
 }

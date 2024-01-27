@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chatting_app_flutter/domain/entities/message_send.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteChatDatasource {
@@ -29,13 +30,17 @@ class RemoteChatDatasource {
     return response.body;
   }
 
-  Future<String> createChat(String id, String from, String text) async {
+  Future<String> createChat(MessageSend message) async {
+    print(message.text);
     var response = await http.post(Uri.parse('$url/api/chat'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, dynamic>{'id': id, 'from': from, 'text': text}));
+        body: jsonEncode({
+          'id': message.id,
+          'username': message.username,
+          'text': message.text,
+        }));
     return response.body;
   }
 }

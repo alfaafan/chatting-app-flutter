@@ -1,3 +1,4 @@
+import 'package:chatting_app_flutter/domain/entities/chat.dart';
 import 'package:intl/intl.dart';
 
 class Helper {
@@ -12,14 +13,11 @@ class Helper {
     }
   }
 
-  Map<String, dynamic> getLastMessage(List chatList, int i) {
-    if (chatList.length > i &&
-        chatList[i]['messages'] is List &&
-        chatList[i]['messages'].isNotEmpty &&
-        chatList[i]['messages'].last['text'] != null) {
+  Map<String, dynamic> getLastMessage(List<ChatData> chatList, int i) {
+    if (chatList.length > i && chatList[i].messages.isNotEmpty) {
       return {
-        'message': chatList[i]['messages'].last['text'].toString(),
-        'timestamp': chatList[i]['messages'].last['timestamp'],
+        'message': chatList[i].messages.last.text.toString(),
+        'timestamp': chatList[i].messages.last.timestamp,
       };
     } else {
       return {
@@ -33,8 +31,9 @@ class Helper {
     return users.firstWhere((user) => user != currentUser);
   }
 
-  String formatDateTime(String timestamp) {
-    var date = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
+  String formatDateTime(var time) {
+    int timestamp = int.parse(time);
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
     var formatter = DateFormat('HH:mm');
     return formatter.format(date);
   }
