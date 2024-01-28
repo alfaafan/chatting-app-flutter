@@ -8,17 +8,29 @@ class RemoteChatDatasource {
 
   Future<String> getUser(String username) async {
     var response = await http.get(Uri.parse('$url/api/user/$username'));
-    return response.body;
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to get user data');
+    }
   }
 
   Future<String> getChat(String id) async {
     var response = await http.get(Uri.parse('$url/api/chat/$id'));
-    return response.body;
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to get user chat');
+    }
   }
 
   Future<String> getRoom(String username) async {
     var response = await http.get(Uri.parse('$url/api/room/$username'));
-    return response.body;
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to get user room');
+    }
   }
 
   Future<String> createRoom(String from, String to) async {
@@ -27,20 +39,32 @@ class RemoteChatDatasource {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{'from': from, 'to': to}));
-    return response.body;
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to post user room');
+    }
   }
 
   Future<String> createChat(MessageSend message) async {
-    print(message.text);
+    print({
+      'id': message.id,
+      'from': message.username,
+      'text': message.text,
+    });
     var response = await http.post(Uri.parse('$url/api/chat'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode({
           'id': message.id,
-          'username': message.username,
+          'from': message.username,
           'text': message.text,
         }));
-    return response.body;
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to post user chat');
+    }
   }
 }

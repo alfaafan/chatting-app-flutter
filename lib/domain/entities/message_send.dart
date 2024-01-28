@@ -20,6 +20,15 @@ class MessageSend {
   }
 
   Map<String, dynamic> toJson() {
+    print({
+      'debug': 'MessageSend.toJson',
+      'id': {'id': this.id, 'type': this.id.runtimeType},
+      'username': {
+        'username': this.username,
+        'type': this.username.runtimeType
+      },
+      'text': {'text': this.text, 'type': this.text.runtimeType},
+    });
     return {
       'id': this.id,
       'username': this.username,

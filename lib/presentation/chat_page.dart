@@ -7,15 +7,15 @@ import 'package:chatting_app_flutter/shared/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage(
+  ChatPage(
       {super.key,
       required this.roomId,
       required this.username,
       required this.otherUser});
 
-  final String roomId;
-  final String username;
-  final String otherUser;
+  late String roomId;
+  late String username;
+  late String otherUser;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -120,6 +120,7 @@ class _ChatPageState extends State<ChatPage> {
                     height: 50,
                     child: ElevatedButton(
                         onPressed: () async {
+                          print(widget.username);
                           MessageSend message = MessageSend(
                               id: widget.roomId,
                               username: widget.username,

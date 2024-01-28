@@ -45,9 +45,10 @@ class ChatRepository {
 
   Future<bool> createChat(MessageSend message) async {
     print(message.runtimeType);
-    var response =
-        await remoteChatDatasource.createChat(message.toJson() as MessageSend);
+    var response = await remoteChatDatasource.createChat(message);
+    var responseJson = jsonDecode(response)['data'];
     print(response);
-    return response == 'true' ? true : false;
+    print(responseJson);
+    return responseJson;
   }
 }
