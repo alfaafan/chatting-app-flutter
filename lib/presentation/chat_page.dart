@@ -7,15 +7,15 @@ import 'package:chatting_app_flutter/shared/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  ChatPage(
+  const ChatPage(
       {super.key,
       required this.roomId,
       required this.username,
       required this.otherUser});
 
-  late String roomId;
-  late String username;
-  late String otherUser;
+  final String roomId;
+  final String username;
+  final String otherUser;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -44,7 +44,7 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             Expanded(
               child: FutureBuilder<ChatRoom>(
-                future: chatRoomData,
+                future: GetChat().execute(widget.roomId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(

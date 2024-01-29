@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late List<String> roomList = [];
+  late List<ChatData> chatList = [];
 
   @override
   void initState() {
@@ -23,6 +24,11 @@ class _HomePageState extends State<HomePage> {
     GetUser().execute(widget.username).then((result) {
       setState(() {
         roomList = result.rooms;
+      });
+    });
+    GetChatRoom().execute(widget.username).then((result) {
+      setState(() {
+        chatList = result;
       });
     });
   }
@@ -53,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text('Tidak ada chat'),
                   );
                 } else {
-                  final chatList = snapshot.data!;
+                  var chatList = snapshot.data!;
                   return ListView(
                     children: List.generate(chatList.length, (i) {
                       var lastMessage = Helper().getLastMessage(chatList, i);
@@ -62,13 +68,20 @@ class _HomePageState extends State<HomePage> {
                       var formattedDate =
                           Helper().formatDateTime(lastMessage['timestamp']);
                       return InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                          onTap: () async {
+                            await Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => ChatPage(
                                       roomId: roomList[i],
                                       username: widget.username,
                                       otherUser: otherUser,
                                     )));
+                            GetChatRoom()
+                                .execute(widget.username)
+                                .then((result) {
+                              setState(() {
+                                chatList = result;
+                              });
+                            });
                           },
                           child: ListTile(
                             leading: const CircleAvatar(
@@ -83,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                                         .toString()
                                         .length >
                                     30
-                                ? '${lastMessage['message'].toString().substring(0, 30)}...'
+                                ? '${lastMessage['message'].toString().substring(0, 20)}...'
                                 : lastMessage['message'].toString()),
                             trailing: Text(formattedDate),
                           ));
